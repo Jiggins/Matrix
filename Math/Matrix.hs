@@ -1,6 +1,6 @@
-module Matrix where 
+module Math.Matrix where 
 
-import Vector
+import Math.Vector
 import Data.Vector ((!))
 import Data.List hiding (transpose)
 import Data.Ord
@@ -133,14 +133,14 @@ swapColumn a b m = matrix (rows m) (columns m) swap
 (<|>) :: Matrix a -> Matrix a -> Matrix a
 m <|> n = matrix (rows m `min` rows n) (columns m + columns n) generate
     where generate (i,j) 
-        | j < columns m = getElem (i,j) m
-        | otherwise     = getElem (i, j - columns m) n
+            | j < columns m = getElem (i,j) m
+            | otherwise     = getElem (i, j - columns m) n
 
 (<->) :: Matrix a -> Matrix a -> Matrix a
 m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
     where generate (i,j) 
-        | i < rows m = getElem (i,j) m
-        | otherwise  = getElem (i - rows m, j) n
+            | i < rows m = getElem (i,j) m
+            | otherwise  = getElem (i - rows m, j) n
 
 -- * Conversions
 
@@ -161,7 +161,7 @@ toVector :: Matrix a -> Vector a
 toVector m = V.generate (rows m * columns m) $ 
     \i -> getElem (i `div` columns m, i `mod` rows m) m
 
-main :: IO ()
+{-main :: IO ()
 main = do
     let testM = Matrix 2 3 (V.fromList [V.fromList [0,1,2], V.fromList[3,4,5]])
     let testL = fromLists [[0,1,2], [3,4,5]]
@@ -169,4 +169,4 @@ main = do
     let a = fromLists [[1,2,3],[4,5,6]]
     let b = fromLists [[7,8],[9,10],[11,12]]
     let c = matrix 4 4 ((\(i,j) -> (4*i)+j))
-    print $ toVector c
+    print $ toVector c-}
