@@ -41,7 +41,12 @@ matrix :: Int               -- ^ Number of rows
 matrix row col f = Matrix row col newMatrix
     where newMatrix = V.generate row (\i -> V.generate col $ (curry f) i)
 
--- | Creates an n x n matrix where the main diagonal = 0.
+{- | Creates an n x n matrix where the main diagonal = 0.
+    >>> identity 3
+    | 1 0 0 |
+    | 0 1 0 |
+    | 0 0 1 |
+-}
 identity :: Num a => Int -> Matrix a
 identity n = matrix n n (\(i,j) -> if i == j then 1 else 0)
 
@@ -49,7 +54,19 @@ identity n = matrix n n (\(i,j) -> if i == j then 1 else 0)
 zeroMatrix :: Num a => Int -> Int -> Matrix a
 zeroMatrix m n = matrix m n (\_ -> 0)
 
+{- | Creates an n x m matrix of Ints in ascending order.
+>>> inOrderMatrix 4 4
+|  1  2  3  4 |
+|  5  6  7  8 |
+|  9 10 11 12 |
+| 13 14 15 16 |
+-}
+inOrderMatrix :: Int -> Int -> Matrix Int
+inOrderMatrix n m = matrix n m $ \(i,j) -> i*m + j+1
+
 -- * Accessing
+
+-- ** Accessing elements
 
 -- | returns the element at position (i,j)
 getElem :: (Int, Int) -> Matrix a -> a
@@ -76,6 +93,8 @@ column i m | i < 0         = error $ "Negative index " ++ show i
 mainDiagonal :: Matrix a -> Vector a
 mainDiagonal m = V.generate ((columns m) `min` (rows m)) (\i -> getElem (i,i) m)
 
+-- ** Properties
+
 -- | Returns the size of the matrix as a pair (rows, columns)
 size :: Matrix a -> (Int,Int)
 size m = (rows m, columns m)
@@ -85,6 +104,13 @@ square :: Matrix a -> Bool
 square m = (rows m) == (columns m)
 
 -- *  Matrix Manipulation
+
+-- ** Single Matrix Operations
+
+-- | Returns the transpose of a matrix
+--   Swaps the rows and columns of a vector
+transpose :: Matrix a -> Matrix a
+transpose m = matrix (columns m) (rows m) (\(i,j) -> getElem (j,i) m)
 
 -- | Synonym for (*)
 --   Multiplies the two given matrices.
@@ -100,11 +126,6 @@ mZipWith :: (a -> b -> c) -> Matrix a -> Matrix b -> Matrix c
 mZipWith f m n = matrix row col (\(i,j) -> getElem (i,j) m `f` getElem (i,j) n)
     where row = min (rows m) (rows n)
           col = min (columns m) (columns n)
-
--- | Returns the transpose of a matrix
---   Swaps the rows and columns of a vector
-transpose :: Matrix a -> Matrix a
-transpose m = matrix (columns m) (rows m) (\(i,j) -> getElem (j,i) m)
 
 -- ** Row and Column Operations
 
@@ -147,26 +168,22 @@ m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
 toLists :: Matrix a -> [[a]]
 toLists = V.toList . fmap V.toList . vectors
 
+{- | Converts lists to Matrix
+
+>>> fromLists [[1,2,3], [4,5,6]]
+| 1 2 3 |
+| 4 5 6 |
+
+-}
 fromLists :: [[a]] -> Matrix a
 fromLists = fromVectors . V.fromList . map V.fromList
 
 fromVectors :: Vector (Vector a) -> Matrix a
 fromVectors vs = Matrix row col vs
     where row = V.length vs
-          col = V.length $ vs ! 0
+          col = V.minimum $ fmap V.length vs
 
 -- | Creates a vector from a matrix
 --   In the order (0,0), (0,1), .. (0,n), (1,0), (1,1), .. (n,n)
 toVector :: Matrix a -> Vector a
-toVector m = V.generate (rows m * columns m) $ 
-    \i -> getElem (i `div` columns m, i `mod` rows m) m
-
-{-main :: IO ()
-main = do
-    let testM = Matrix 2 3 (V.fromList [V.fromList [0,1,2], V.fromList[3,4,5]])
-    let testL = fromLists [[0,1,2], [3,4,5]]
-    let testm = matrix 2 3 (\(i,j) -> (3*i)+j)
-    let a = fromLists [[1,2,3],[4,5,6]]
-    let b = fromLists [[7,8],[9,10],[11,12]]
-    let c = matrix 4 4 ((\(i,j) -> (4*i)+j))
-    print $ toVector c-}
+toVector = V.concat . V.toList . vectors

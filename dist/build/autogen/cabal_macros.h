@@ -7,6 +7,13 @@
   (major1) == 4 && (major2) <  6 || \
   (major1) == 4 && (major2) == 6 && (minor) <= 0)
 
+/* package split-0.2.2 */
+#define VERSION_split "0.2.2"
+#define MIN_VERSION_split(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  2 || \
+  (major1) == 0 && (major2) == 2 && (minor) <= 2)
+
 /* package vector-0.10.0.1 */
 #define VERSION_vector "0.10.0.1"
 #define MIN_VERSION_vector(major1,major2,minor) (\
@@ -69,4 +76,11 @@
   (major1) <  0 || \
   (major1) == 0 && (major2) <  67 || \
   (major1) == 0 && (major2) == 67 && (minor) <= 0)
+
+/* tool pkg-config-0.28 */
+#define TOOL_VERSION_pkg_config "0.28"
+#define MIN_TOOL_VERSION_pkg_config(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  28 || \
+  (major1) == 0 && (major2) == 28 && (minor) <= 0)
 

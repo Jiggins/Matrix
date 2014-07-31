@@ -1,8 +1,23 @@
+--------------------------------------------------------------------------------
+{- |
+Module      :  Math.Vector
+Description :  A Haskell implementation of Numeric Vectors and Matrices
+
+License     :  GPL-3
+Maintainer  :  jackhiggins07@gmail.com
+Stability   :  Stable
+Portability :  Portable
+
+A Haskell implementation of Numeric Vectors and Matrices 
+-}
+--------------------------------------------------------------------------------
 module Math.Vector where
 
+	import Data.List.Split
+	import Math.Util
 	import qualified Data.Vector as V
 
-	type Point = V.Vector
+	type Point  = V.Vector
 	type Vector = V.Vector
 
 	instance Num a => Num (V.Vector a) where
@@ -13,60 +28,84 @@ module Math.Vector where
 		signum      = undefined
 		fromInteger = undefined
 
-	(.:) :: (b -> c) -> (a -> a1 -> b) -> a -> a1 -> c
-	(.:) = (.) . (.)
+	-- * Operators
 
+	-- | Infix operator for the 'dot' product of two Vectors
 	(<.>) :: (Num a) => Vector a -> Vector a -> a
 	(<.>) = dotProduct
 
-	-- * Scalar multiplication
+	-- | Infix operator for 'perpendicular'
+	(-|)  :: (Eq a, Num a) => Vector a -> Vector a -> Bool
+	(-|)  = perpendicular
+
+	-- | Infix operator for 'parallel'
+	(-||) :: (Eq a, Floating a) => Vector a -> Vector a -> Bool
+	(-||) = parallel
+	
+	-- | Multiply a functor (Matrix or Vector) by a scalar
 	(*>) :: (Functor f, Num a) => f a -> a -> f a
-	(<*) :: (Functor f, Num a) => a -> f a -> f a
 	vector *> scalar = fmap (*scalar) vector
+	
+	-- | Multiply a functor (Matrix or Vector) by a scalar
+	(<*) :: (Functor f, Num a) => a -> f a -> f a
 	scalar <* vector = vector *> scalar
 
+	-- * Vector Creation
+
+	-- | Vector a relative to b
+	vector :: (Num a) => Point a -> Point a -> Vector a
+	vector a b = pointToVector $ b - a
+	
+	-- | Reads a vector from a String in the form
+	--	 <x0, x1, .. xn>
+	readVector :: Read a => String -> Vector a
+	readVector  = fmap read . f
+		where f (x:xs)
+			| x /= '<'  = error "Parse error"
+			| last xs  /= '>' = error "Parse error"  
+			| otherwise = V.fromList . splitOn "," . init $ xs
+
+	-- * Vector Operations
+
+	-- ** Angles
+
+	-- | Get the angle between two vectors
 	angle :: (Floating a) => Vector a -> Vector a -> a
 	angle u v = toDegrees . acos $ u <.> v / (magnitude u * magnitude v)
 
-	dot :: (Num a) => Vector a -> Vector a -> a
-	dot = dotProduct
-
-	dotProduct :: (Num a) => Vector a -> Vector a -> a
-	dotProduct = V.sum .: (*)
-
-	magnitude :: (Floating a) => Vector a -> a
-	magnitude = sqrt . V.sum . fmap (^2)
-
-	-- @param u v	- Vectors
-	-- @return 		- True if vectors are parallel
-	-- 				- May have trouble with rounding errors
+	-- | True when two vectors are parallel
+	--	 May have trouble with rounding errors
 	parallel :: (Eq a, Floating a) => Vector a -> Vector a -> Bool
 	parallel u v = unitVector u == unitVector v
 
-	-- @param u v	- Vectors
-	-- @return 		- True if vectors are perpendicular
+	-- | True when two vectors are parallel
 	perpendicular :: (Eq a, Num a) => Vector a -> Vector a -> Bool
 	perpendicular u v = u <.> v == 0
 
-	pointToVector :: Point a -> Vector a
-	pointToVector x = x  
+	-- ** Dot and cross products
 
-	-- @param u v	- Vectors
-	-- @return 		- Projection u onto v
+	-- | Short form of dotProduct
+	dot :: (Num a) => Vector a -> Vector a -> a
+	dot = dotProduct
+
+	-- | Dot product of two Vectors
+	dotProduct :: (Num a) => Vector a -> Vector a -> a
+	dotProduct = V.sum .: (*)
+
+	-- | Projection of u onto v
 	projection :: (Floating a) => Vector a -> Vector a -> Vector a
 	projection u v = (u <.> v / u <.> u) <* u
 
-	toDegrees :: Floating a => a -> a
-	toDegrees rad = rad * (180 / pi)
+	-- ** Single vector operations
 
-	toRadians :: Floating a => a -> a
-	toRadians deg = deg * (pi / 180)
+	-- | Returns the magnitude / vector norm of a vector
+	magnitude :: (Floating a) => Vector a -> a
+	magnitude = sqrt . V.sum . fmap (^2)
 
-	-- @return 		- returns the unit vector of u
+	-- | returns the unit vector of u
 	unitVector :: (Floating a) => Vector a -> Vector a
 	unitVector u = fmap (/ magnitude u) u
-
-	-- @param a b	- Point
-	-- @return 		- Vector a relative to b
-	vector :: (Num a) => Point a -> Point a -> Vector a
-	vector a b = pointToVector $ b - a
+	-- | Converts a Point to a Vector
+	
+	pointToVector :: Point a -> Vector a
+	pointToVector x = x
