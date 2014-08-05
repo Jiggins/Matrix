@@ -8,7 +8,18 @@ Maintainer  :  jackhiggins07@gmail.com
 Stability   :  Stable
 Portability :  Portable
 
-A Haskell implementation of Numeric Vectors and Matrices 
+A Haskell implementation of Numeric Vectors and Matrices
+
+This class defines an extension of 'Data.Vector' to introduce numeric operation 
+for vectors.  It begins by adding an instance for Num Vector,  allowing for 
+numeric vectors to be treated as numbers.  
+
+example:	let u = <1,2,3>
+			let v = <3,4,5>
+			then u + v = <4,6,8>
+
+It also implements common vector functions such as dot and (eventually) cross 
+products.
 -}
 --------------------------------------------------------------------------------
 module Math.Vector where
@@ -53,8 +64,8 @@ module Math.Vector where
 	-- * Vector Creation
 
 	-- | Vector a relative to b
-	vector :: (Num a) => Point a -> Point a -> Vector a
-	vector a b = pointToVector $ b - a
+	newVector :: (Num a) => Point a -> Point a -> Vector a
+	newVector a b = pointToVector $ b - a
 	
 	-- | Reads a vector from a String in the form
 	--	 <x0, x1, .. xn>

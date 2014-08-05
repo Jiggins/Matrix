@@ -1,3 +1,16 @@
+--------------------------------------------------------------------------------
+{- |
+Module      :  Math.Vector
+Description :  A Haskell implementation of Numeric Vectors and Matrices
+
+License     :  GPL-3
+Maintainer  :  jackhiggins07@gmail.com
+Stability   :  Stable
+Portability :  Portable
+
+A Haskell implementation of Numeric Vectors and Matrices 
+-}
+--------------------------------------------------------------------------------
 module Math.Matrix where 
 
 import Math.Vector
