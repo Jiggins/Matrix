@@ -55,10 +55,12 @@ matrix row col f = Matrix row col newMatrix
     where newMatrix = V.generate row (\i -> V.generate col $ (curry f) i)
 
 {- | Creates an n x n matrix where the main diagonal = 0.
-    >>> identity 3
-    | 1 0 0 |
-    | 0 1 0 |
-    | 0 0 1 |
+
+>>> identity 3
+| 1 0 0 |
+| 0 1 0 |
+| 0 0 1 |
+
 -}
 identity :: Num a => Int -> Matrix a
 identity n = matrix n n (\(i,j) -> if i == j then 1 else 0)
@@ -68,14 +70,19 @@ zeroMatrix :: Num a => Int -> Int -> Matrix a
 zeroMatrix m n = matrix m n (\_ -> 0)
 
 {- | Creates an n x m matrix of Ints in ascending order.
+
 >>> inOrderMatrix 4 4
 |  1  2  3  4 |
 |  5  6  7  8 |
 |  9 10 11 12 |
 | 13 14 15 16 |
+
 -}
 inOrderMatrix :: Int -> Int -> Matrix Int
 inOrderMatrix n m = matrix n m $ \(i,j) -> i*m + j+1
+
+enumMatrix :: (Enum a) => Int -> Int -> a -> Matrix a
+enumMatrix r c = fromList r c . enumFrom
 
 -- * Accessing
 
@@ -181,6 +188,9 @@ m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
 toLists :: Matrix a -> [[a]]
 toLists = V.toList . fmap V.toList . vectors
 
+fromList :: Int -> Int -> [a] -> Matrix a
+fromList r c xs = matrix r c (\(i,j) -> xs !! (i*c + j))
+
 {- | Converts lists to Matrix
 
 >>> fromLists [[1,2,3], [4,5,6]]
@@ -200,3 +210,5 @@ fromVectors vs = Matrix row col vs
 --   In the order (0,0), (0,1), .. (0,n), (1,0), (1,1), .. (n,n)
 toVector :: Matrix a -> Vector a
 toVector = V.concat . V.toList . vectors
+
+main = print $ enumMatrix 1 3 4.2

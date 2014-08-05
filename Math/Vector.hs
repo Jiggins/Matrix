@@ -14,9 +14,11 @@ This class defines an extension of 'Data.Vector' to introduce numeric operation
 for vectors.  It begins by adding an instance for Num Vector,  allowing for 
 numeric vectors to be treated as numbers.  
 
-example:	let u = <1,2,3>
-			let v = <3,4,5>
-			then u + v = <4,6,8>
+@
+example: let u = |1,2,3|
+         let v = |3,4,5|
+    then u + v = |4,6,8|
+@
 
 It also implements common vector functions such as dot and (eventually) cross 
 products.
@@ -28,7 +30,12 @@ module Math.Vector where
 	import Math.Util
 	import qualified Data.Vector as V
 
+	-- | Points are expressed as 'Data.Vector's.
+	--	 Points can be of any dimension.  P ∈ Rⁿ
 	type Point  = V.Vector
+
+	-- | Vectors are expressed as 'Data.Vector's.
+	--	 Vectors can be of any dimension.  V ∈ Rⁿ
 	type Vector = V.Vector
 
 	instance Num a => Num (V.Vector a) where
