@@ -24,7 +24,8 @@ data Matrix a = Matrix { rows    :: Int -- ^ Number of rows
                        , vectors :: (Vector (Vector a))
                       } deriving (Eq)
 
-
+-- | Allows for Matrices to be treated as a number.
+-- This allows for addition, subtraction ans multiplication of matrices.
 instance (Num a) => Num (Matrix a) where
     (+) = mZipWith (+)
     (*) = multiplyMatrix
@@ -33,9 +34,13 @@ instance (Num a) => Num (Matrix a) where
     signum = undefined
     fromInteger = undefined
 
+-- | Instance the Functor class to define the fmap function for matrices.  
+-- mapping a function over a matrix will map the function over all of the 
+-- elements in the matrix.
 instance Functor Matrix where
     fmap f (Matrix row col vec) = Matrix row col (fmap (fmap f) vec)
 
+-- | Instance Show to convert Matrices to Strings.  Useful for printing.
 instance Show a => Show (Matrix a) where
     show = intercalate "\n" . pad . toLists . fmap show
       where bars = ("|"++) . (++" |")
@@ -81,7 +86,20 @@ zeroMatrix m n = matrix m n (\_ -> 0)
 inOrderMatrix :: Int -> Int -> Matrix Int
 inOrderMatrix n m = matrix n m $ \(i,j) -> i*m + j+1
 
-enumMatrix :: (Enum a) => Int -> Int -> a -> Matrix a
+{- | Similar to 'inOrderMatrix' but is given a starting value.  The starting 
+value must be an enumeratable type; Int, Char, etc.
+
+>>> enumMatrix 3 3 'a'
+| 'a' 'b' 'c' |
+| 'd' 'e' 'f' |
+| 'g' 'h' 'i' |
+
+-}
+enumMatrix :: (Enum a) 
+           => Int -- ^ Rows
+           -> Int -- ^ Columns
+           -> a   -- ^ Starting value
+           -> Matrix a
 enumMatrix r c = fromList r c . enumFrom
 
 -- * Accessing
@@ -149,20 +167,24 @@ mZipWith f m n = matrix row col (\(i,j) -> getElem (i,j) m `f` getElem (i,j) n)
 
 -- ** Row and Column Operations
 
+-- | Maps a function onto a row
 mapRow :: (a -> a) -> Int -> Matrix a -> Matrix a
 mapRow f r m = matrix (rows m) (columns m) $ 
     \(i,j) -> if i == r then f $ getElem (i,j) m else getElem (i,j) m
 
+-- | Maps a function onto a column
 mapColumn :: (a -> a) -> Int -> Matrix a -> Matrix a
 mapColumn f c m = matrix (rows m) (columns m) $
     \(i,j) -> if j == c then f $ getElem (i,j) m else getElem (i,j) m
 
+-- | Swap two rows
 swapRow :: Int -> Int -> Matrix a -> Matrix a
 swapRow a b m = matrix (rows m) (columns m) swap 
     where swap (i,j) | i == a = getElem (b,j) m
                      | i == b = getElem (a,j) m
                      | otherwise = getElem (i,j) m
 
+-- | Swap two columns
 swapColumn :: Int -> Int -> Matrix a -> Matrix a
 swapColumn a b m = matrix (rows m) (columns m) swap
     where swap (i,j) | j == a = getElem (b,j) m
@@ -185,9 +207,12 @@ m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
 
 -- * Conversions
 
+-- | Converts the matrix to a list of lists.
 toLists :: Matrix a -> [[a]]
 toLists = V.toList . fmap V.toList . vectors
 
+-- | Converts a single list into a matrix of the given size.
+-- The list must contain enough elements to fill the matrix.
 fromList :: Int -> Int -> [a] -> Matrix a
 fromList r c xs = matrix r c (\(i,j) -> xs !! (i*c + j))
 
@@ -201,6 +226,7 @@ fromList r c xs = matrix r c (\(i,j) -> xs !! (i*c + j))
 fromLists :: [[a]] -> Matrix a
 fromLists = fromVectors . V.fromList . map V.fromList
 
+-- | Creates a matrix from a Vector of Vectors
 fromVectors :: Vector (Vector a) -> Matrix a
 fromVectors vs = Matrix row col vs
     where row = V.length vs
@@ -210,5 +236,3 @@ fromVectors vs = Matrix row col vs
 --   In the order (0,0), (0,1), .. (0,n), (1,0), (1,1), .. (n,n)
 toVector :: Matrix a -> Vector a
 toVector = V.concat . V.toList . vectors
-
-main = print $ enumMatrix 1 3 4.2

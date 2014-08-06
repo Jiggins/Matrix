@@ -1,3 +1,29 @@
+--------------------------------------------------------------------------------
+{- |
+Module      :  Math.Line
+Description :  A Haskell implementation of Numeric Vectors and Matrices
+
+License     :  GPL-3
+Maintainer  :  jackhiggins07@gmail.com
+Stability   :  Stable
+Portability :  Portable
+
+A Haskell implementation of Numeric Vectors and Matrices
+
+This class defines an extension of 'Data.Vector' to introduce numeric operation 
+for vectors.  It begins by adding an instance for Num Vector,  allowing for 
+numeric vectors to be treated as numbers.  
+
+@
+example: let u = |1,2,3|
+         let v = |3,4,5|
+    then u + v = |4,6,8|
+@
+
+It also implements common vector functions such as dot and (eventually) cross 
+products.
+-}
+--------------------------------------------------------------------------------
 module Math.Line where
 
 import Data.List
@@ -20,6 +46,10 @@ data Line a = Line { point :: Point a 		-- ^ Any point on the line
 				   , vector :: Vector a	-- ^ Direction vector
 				  } deriving (Eq)
 
+-- | Converts a line to a String its Vector equation form:
+-- (Point) + t(vector).
+-- Example:
+-- @(0,0,0) + t(1,2,3)@
 instance Show a => Show (Line a) where
 	show l = concat ["Line (", intercalate "," . map show . V.toList $ point l
 		, ") + t(", intercalate "," . map show . V.toList $ vector l, ")"]
