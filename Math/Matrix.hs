@@ -8,7 +8,8 @@ Maintainer  :  jackhiggins07@gmail.com
 Stability   :  Stable
 Portability :  Portable
 
-A Haskell implementation of Numeric Vectors and Matrices 
+A Haskell implementation of Numeric Vectors, Matrices and Lines.
+
 -}
 --------------------------------------------------------------------------------
 module Math.Matrix where 
@@ -19,6 +20,16 @@ import Data.List hiding (transpose)
 import Data.Ord
 import qualified Data.Vector as V
 
+{- | Matrix implementation using the 'Data.Vector' class.  A matrix is defined 
+    as a 'Vector' of 'Vectors'.  This implementation allows for Matrices of any
+    size from 1 * 1 up to intMax * intMax, (theoretically but don't try it).
+
+    >>> print $ identity 4
+    | 1 0 0 0 |
+    | 0 1 0 0 |
+    | 0 0 1 0 |
+    | 0 0 0 1 |
+-}
 data Matrix a = Matrix { rows    :: Int -- ^ Number of rows
                        , columns :: Int -- ^ Number of Columns
                        , vectors :: (Vector (Vector a))
@@ -51,7 +62,23 @@ instance Show a => Show (Matrix a) where
 
 -- * Matrix Creation
 
--- | Creates an m x n matrix with the given generator function.
+{- | Creates an m x n matrix with the given generator function.
+   
+   The generator function can be any funtion of type (Int,Int) -> a.  Where 
+   (Int, Int) represents the position (x,y) in the matrix and a is the result at
+   that position. 
+
+   Example:
+   
+   >\(x,y) -> x + y
+
+   >>> matrix 4 4 (\(x,y) -> x + y)
+   | 0 1 2 3 |  which is equivalent to: | (0 + 0), (0 + 1), (0 + 2), (0 + 3) |
+   | 1 2 3 4 |                          | (1 + 0), (1 + 1), (1 + 2), (1 + 3) |
+   | 2 3 4 5 |                          | (2 + 0), (2 + 1), (2 + 2), (2 + 3) |
+   | 3 4 5 6 |                          | (3 + 0), (3 + 1), (3 + 2), (3 + 3) |
+-}
+
 matrix :: Int               -- ^ Number of rows
        -> Int               -- ^ Number of columns
        -> ((Int, Int) -> a) -- ^ Generator function

@@ -8,7 +8,7 @@ Maintainer  :  jackhiggins07@gmail.com
 Stability   :  Stable
 Portability :  Portable
 
-A Haskell implementation of Numeric Vectors and Matrices
+A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
 This class defines an extension of 'Data.Vector' to introduce numeric operation 
 for vectors.  It begins by adding an instance for Num Vector,  allowing for 

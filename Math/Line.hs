@@ -1,27 +1,17 @@
 --------------------------------------------------------------------------------
 {- |
 Module      :  Math.Line
-Description :  A Haskell implementation of Numeric Vectors and Matrices
+Description :  A Haskell implementation of Lines in Vector form
 
 License     :  GPL-3
 Maintainer  :  jackhiggins07@gmail.com
 Stability   :  Stable
 Portability :  Portable
 
-A Haskell implementation of Numeric Vectors and Matrices
+A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
-This class defines an extension of 'Data.Vector' to introduce numeric operation 
-for vectors.  It begins by adding an instance for Num Vector,  allowing for 
-numeric vectors to be treated as numbers.  
+This class defines functions to operate on Lines in vector form.  
 
-@
-example: let u = |1,2,3|
-         let v = |3,4,5|
-    then u + v = |4,6,8|
-@
-
-It also implements common vector functions such as dot and (eventually) cross 
-products.
 -}
 --------------------------------------------------------------------------------
 module Math.Line where
@@ -42,7 +32,7 @@ import qualified Data.Vector as V
 	where v₀➝ corresponds to some point on the line and d➝ gives the direction 
 	of the line.
 -}
-data Line a = Line { point :: Point a 		-- ^ Any point on the line
+data Line a = Line { point :: Point a 	-- ^ Any point on the line
 				   , vector :: Vector a	-- ^ Direction vector
 				  } deriving (Eq)
 

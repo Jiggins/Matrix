@@ -14,14 +14,14 @@ catchIO = Exception.catch
 
 
 version :: Version
-version = Version {versionBranch = [0,1,3,1], versionTags = []}
+version = Version {versionBranch = [0,1,3,2], versionTags = []}
 bindir, libdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.1/bin"
-libdir     = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.1/lib"
-datadir    = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.1/share"
-libexecdir = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.1/libexec"
-sysconfdir = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.1/etc"
+bindir     = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.2/bin"
+libdir     = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.2/lib"
+datadir    = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.2/share"
+libexecdir = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.2/libexec"
+sysconfdir = "/Users/Jack/Library/Haskell/ghc-7.6.3/lib/Matrix-0.1.3.2/etc"
 
 getBinDir, getLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "Matrix_bindir") (\_ -> return bindir)
