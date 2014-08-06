@@ -3,3 +3,11 @@
 *.o
 *.hi
 *.h
+*~
+*#*
+
+# CABAL
+build
+
+# Haskell Program Coverage
+.hpc
