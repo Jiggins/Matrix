@@ -1,13 +1,5 @@
-./dist/build/*
-*.a
-*.o
-*.hi
-*.h
-*~
-*#*
-
-# CABAL
-build
-
-# Haskell Program Coverage
-.hpc
+build/
+.a
+.o
+.hi
+.h
