@@ -13,12 +13,14 @@ Installation
 - if not download from https://www.haskell.org/platform/
 - if it is installed
 - Unix:
+    ```Bash
     cd path/to/Matrix
   
     cabal update
     cabal build && cabal install
-  
+    ```
 - Windows:
+
     cd path\to\Matrix
 
     cabal update
