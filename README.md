@@ -4,11 +4,11 @@ Matrix
 A Haskell implentation of Numeric Vectors, Matrices and Lines.
 
 Installation
-============
+------------
 
 - Download the zip from github and extract it somewhere.
 - Make sure you have the Haskell Platform installed:
---* In Terminal/Command Prompt
+  * In Terminal/Command Prompt
     ```Bash
     cabal --version
     ```
