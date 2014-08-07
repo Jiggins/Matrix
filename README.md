@@ -6,20 +6,20 @@ A Haskell implentation of Numeric Vectors, Matrices and Lines.
 Installation
 ============
 
--Download the zip from github and extract it somewhere.
--Make sure you have the Haskell Platform installed
-  In Terminal/Command Prompt
-  cabal --version
--if not download from https://www.haskell.org/platform/
--if it is installed
--Unix:
-  cd path/to/Matrix
+- Download the zip from github and extract it somewhere.
+- Make sure you have the Haskell Platform installed
+    In Terminal/Command Prompt
+    cabal --version
+- if not download from https://www.haskell.org/platform/
+- if it is installed
+- Unix:
+    cd path/to/Matrix
   
-  cabal update
-  cabal build && cabal install
+    cabal update
+    cabal build && cabal install
   
-Windows:
-  cd path\to\Matrix
+- Windows:
+    cd path\to\Matrix
 
-  cabal update
-  cabal build && cabal install
+    cabal update
+    cabal build && cabal install
