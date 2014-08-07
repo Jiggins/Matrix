@@ -7,7 +7,7 @@ Installation
 ============
 
 - Download the zip from github and extract it somewhere.
-- Make sure you have the Haskell Platform installed
+- Make sure you have the Haskell Platform installed:
     ```Bash
     In Terminal/Command Prompt
     cabal --version
