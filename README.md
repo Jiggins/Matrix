@@ -8,8 +8,8 @@ Installation
 
 - Download the zip from github and extract it somewhere.
 - Make sure you have the Haskell Platform installed:
+--* In Terminal/Command Prompt
     ```Bash
-    In Terminal/Command Prompt
     cabal --version
     ```
 - if not download from https://www.haskell.org/platform/
