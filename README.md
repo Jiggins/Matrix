@@ -14,7 +14,7 @@ Installation
     cabal --version
     ```
 - if not download from https://www.haskell.org/platform/
-- if it is installed
+
 - Unix:
     ```Bash
     cd path/to/Matrix
