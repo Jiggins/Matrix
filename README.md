@@ -16,7 +16,7 @@ Installation
 - if not download from https://www.haskell.org/platform/
 
 - Unix:
-    ```Bash
+    ```Batch
     cd path/to/Matrix
   
     cabal update
