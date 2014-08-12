@@ -5,6 +5,7 @@
 *.h
 *~
 *#*
+build/
 
 # CABAL
 build

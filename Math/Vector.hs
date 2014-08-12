@@ -10,7 +10,7 @@ Portability :  Portable
 
 A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
-This class defines an extension of 'Data.Vector' to introduce numeric operation 
+This class defines an extension of 'Data.Vector' to introduce numeric operation
 for vectors.  It begins by adding an instance for Num Vector,  allowing for 
 numeric vectors to be treated as numbers.  
 
@@ -52,9 +52,17 @@ module Math.Vector where
 	(<.>) :: (Num a) => Vector a -> Vector a -> a
 	(<.>) = dotProduct
 
+	-- | Infix operator for the 'dot' product of two Vectors
+	(·) :: (Num a) => Vector a -> Vector a -> a
+	(·) = dotProduct
+
 	-- | Infix operator for 'perpendicular'
-	(-|)  :: (Eq a, Num a) => Vector a -> Vector a -> Bool
-	(-|)  = perpendicular
+	(-|) :: (Eq a, Num a) => Vector a -> Vector a -> Bool
+	(-|) = perpendicular
+
+	-- | Infix operator for 'perpendicular'
+	(⟂) :: (Eq a, Num a) => Vector a -> Vector a -> Bool
+	(⟂) = perpendicular
 
 	-- | Infix operator for 'parallel'
 	(-||) :: (Eq a, Floating a) => Vector a -> Vector a -> Bool
@@ -98,7 +106,7 @@ module Math.Vector where
 
 	-- | True when two vectors are parallel
 	perpendicular :: (Eq a, Num a) => Vector a -> Vector a -> Bool
-	perpendicular u v = u <.> v == 0
+	perpendicular u v = u · v == 0
 
 	-- ** Dot and cross products
 
@@ -123,7 +131,7 @@ module Math.Vector where
 	-- | returns the unit vector of u
 	unitVector :: (Floating a) => Vector a -> Vector a
 	unitVector u = fmap (/ magnitude u) u
-	-- | Converts a Point to a Vector
 	
+	-- | Converts a Point to a Vector
 	pointToVector :: Point a -> Vector a
 	pointToVector x = x

@@ -71,7 +71,7 @@ instance Show a => Show (Matrix a) where
    Example:
    
    >\(x,y) -> x + y
-
+   
    >>> matrix 4 4 (\(x,y) -> x + y)
    | 0 1 2 3 |  which is equivalent to: | (0 + 0), (0 + 1), (0 + 2), (0 + 3) |
    | 1 2 3 4 |                          | (1 + 0), (1 + 1), (1 + 2), (1 + 3) |
