@@ -28,6 +28,7 @@ module Math.Vector where
 
 	import Data.List.Split
 	import Math.Util
+	import Data.Vector ((!))
 	import qualified Data.Vector as V
 
 	-- | Points are expressed as 'Data.Vector's.
@@ -96,6 +97,7 @@ module Math.Vector where
 	-- ** Angles
 
 	-- | Get the angle between two vectors
+	-- Probably wrong
 	angle :: (Floating a) => Vector a -> Vector a -> a
 	angle u v = toDegrees . acos $ u <.> v / (magnitude u * magnitude v)
 
@@ -135,3 +137,10 @@ module Math.Vector where
 	-- | Converts a Point to a Vector
 	pointToVector :: Point a -> Vector a
 	pointToVector x = x
+
+	crossProduct u v | V.length v /= 3 = error "Cross product is defned for 3D."
+	                 | otherwise = V.fromList [(u!1 * v!2) - (u!2 * v!1)
+	                                          ,(u!2 * v!0) - (u!0 * v!2)
+	                                          ,(u!0 * v!1) - (u!1 * v!0)]
+
+	{-main = print $ crossProduct (V.fromList [2,3,4]) (V.fromList [5,6,7])-}

@@ -14,10 +14,10 @@ A Haskell implementation of Numeric Vectors, Matrices and Lines.
 --------------------------------------------------------------------------------
 module Math.Matrix where 
 
-import Math.Vector
-import Data.Vector ((!))
 import Data.List hiding (transpose)
 import Data.Ord
+import Data.Vector ((!))
+import Math.Vector
 import qualified Data.Vector as V
 
 {- | Matrix implementation using the 'Data.Vector' class.  A matrix is defined 
@@ -220,12 +220,34 @@ swapColumn a b m = matrix (rows m) (columns m) swap
 
 -- ** Joining Matrices
 
+{- | Joins two matrices side by side
+   
+   >>> matrix 4 4 (\(i,j)-> 4*i + j+1) <|> identity 4
+   |  1  2  3  4  1  0  0  0 |
+   |  5  6  7  8  0  1  0  0 |
+   |  9 10 11 12  0  0  1  0 |
+   | 13 14 15 16  0  0  0  1 |
+
+-}
 (<|>) :: Matrix a -> Matrix a -> Matrix a
 m <|> n = matrix (rows m `min` rows n) (columns m + columns n) generate
     where generate (i,j) 
             | j < columns m = getElem (i,j) m
             | otherwise     = getElem (i, j - columns m) n
 
+{- | Joins two matrices toop to bottom
+
+   >>> matrix 4 4 (\(i,j)-> 4*i + j+1) <-> identity 4
+   |  1  2  3  4 |
+   |  5  6  7  8 |
+   |  9 10 11 12 |
+   | 13 14 15 16 |
+   |  1  0  0  0 |
+   |  0  1  0  0 |
+   |  0  0  1  0 |
+   |  0  0  0  1 |
+
+-}
 (<->) :: Matrix a -> Matrix a -> Matrix a
 m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
     where generate (i,j) 

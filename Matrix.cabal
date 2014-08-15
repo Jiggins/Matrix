@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                Matrix
-version:             0.1.3.2
+version:             0.1.4.0
 synopsis:            A Haskell implementation of Numeric Vectors, Matrices and 
                      Lines.
 
@@ -19,7 +19,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Math.Matrix, Math.Vector, Math.Line, Math.Util, 
-                       Math.Matrix.Lazy
+                       Math.Matrix.Lazy, Math.Point
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.6 && <4.7, vector >=0.10 && <0.11, split > 0.1.3

@@ -17,8 +17,9 @@ This class defines functions to operate on Lines in vector form.
 module Math.Line where
 
 import Data.List
-import Math.Vector
+import Math.Point
 import Math.Util
+import Math.Vector
 import qualified Data.Vector as V
 
 {- | Line in Vector form.  A line is a geometrical object in Rⁿ that contains a
@@ -47,10 +48,6 @@ instance Show a => Show (Line a) where
 -- | Creates a line from a point and a Vector
 line :: Point a -> Vector a -> Line a 
 line p v = Line p v
-
--- | Distance between two points
-distance :: (Num a, Floating a) => Point a -> Point a -> a
-distance = (sqrt . V.sum . fmap (^2)) .: (-)
 
 --Needs Testing
 -- | Gets the perpendicular distance from a point to a line.
