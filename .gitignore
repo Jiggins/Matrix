@@ -6,9 +6,11 @@
 *~
 *#*
 build/
+dist/
 
 # CABAL
 build
+dist
 
 # Haskell Program Coverage
 .hpc
