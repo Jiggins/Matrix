@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                Matrix
-version:             0.1.4.0
+version:             0.1.4.1
 synopsis:            A Haskell implementation of Numeric Vectors, Matrices and 
                      Lines.
 
