@@ -285,11 +285,3 @@ fromVectors vs = Matrix row col vs
 --   In the order (0,0), (0,1), .. (0,n), (1,0), (1,1), .. (n,n)
 toVector :: Matrix a -> Vector a
 toVector = V.concat . V.toList . vectors
-
--- | Converts a MAtrix to a list of comma seperated lines.
-toCSV :: Show a => Matrix a -> [String]
-toCSV = map (intercalate ",") . toLists . fmap show
-
--- | Prints a matrix in CSV format.
-printCSV :: Show a => Matrix a -> IO ()
-printCSV = mapM_ putStrLn . toCSV
