@@ -29,6 +29,7 @@ module Math.Vector where
 	import Data.List.Split
 	import Math.Util
 	import Data.Vector ((!))
+	import Data.Function
 	import qualified Data.Vector as V
 
 	-- | Points are expressed as 'Data.Vector's.
@@ -142,5 +143,3 @@ module Math.Vector where
 	                 | otherwise = V.fromList [(u!1 * v!2) - (u!2 * v!1)
 	                                          ,(u!2 * v!0) - (u!0 * v!2)
 	                                          ,(u!0 * v!1) - (u!1 * v!0)]
-
-	{-main = print $ crossProduct (V.fromList [2,3,4]) (V.fromList [5,6,7])-}

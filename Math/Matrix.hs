@@ -158,6 +158,10 @@ column i m | i < 0         = error $ "Negative index " ++ show i
 mainDiagonal :: Matrix a -> Vector a
 mainDiagonal m = V.generate ((columns m) `min` (rows m)) (\i -> getElem (i,i) m)
 
+otherDiagonal :: Matrix a -> Vector a
+otherDiagonal m = V.generate ((columns m) `min` (rows m))
+  (\i -> getElem (i,(columns m)-i) m)
+
 -- ** Properties
 
 -- | Returns the size of the matrix as a pair (rows, columns)
