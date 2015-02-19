@@ -1,3 +1,4 @@
+{-# LANGUAGE BangPatterns #-}
 --------------------------------------------------------------------------------
 {- |
 Module      :  Math.Vector
@@ -12,7 +13,7 @@ A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
 -}
 --------------------------------------------------------------------------------
-module Math.Matrix where 
+module Math.Matrix where
 
 import Data.List hiding (transpose)
 import Data.Ord
@@ -30,9 +31,9 @@ import qualified Data.Vector as V
     | 0 0 1 0 |
     | 0 0 0 1 |
 -}
-data Matrix a = Matrix { rows    :: Int -- ^ Number of rows
-                       , columns :: Int -- ^ Number of Columns
-                       , vectors :: (Vector (Vector a))
+data Matrix a = Matrix { rows    :: !Int -- ^ Number of rows
+                       , columns :: !Int -- ^ Number of Columns
+                       , vectors :: !(Vector (Vector a))
                       } deriving (Eq)
 
 -- | Allows for Matrices to be treated as a number.
