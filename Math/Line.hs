@@ -10,7 +10,7 @@ Portability :  Portable
 
 A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
-This class defines functions to operate on Lines in vector form.  
+This class defines functions to operate on Lines in vector form.
 
 -}
 --------------------------------------------------------------------------------
@@ -23,14 +23,14 @@ import Math.Vector
 import qualified Data.Vector as V
 
 {- | Line in Vector form.  A line is a geometrical object in Rⁿ that contains a
-	point P and all points that lie in one direction and its inverse direction 
+	point P and all points that lie in one direction and its inverse direction
 	from point P.
 
 	Every line l in Rⁿ can be parametrized by a vector equation of the form:
 
 		>l: v➝(t) = v₀➝ + t.d➝	for t ∈ R.
 
-	where v₀➝ corresponds to some point on the line and d➝ gives the direction 
+	where v₀➝ corresponds to some point on the line and d➝ gives the direction
 	of the line.
 -}
 data Line a = Line { point :: Point a 	-- ^ Any point on the line
@@ -46,7 +46,7 @@ instance Show a => Show (Line a) where
 		, ") + t(", intercalate "," . map show . V.toList $ vector l, ")"]
 
 -- | Creates a line from a point and a Vector
-line :: Point a -> Vector a -> Line a 
+line :: Point a -> Vector a -> Line a
 line p v = Line p v
 
 --Needs Testing

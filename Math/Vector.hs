@@ -11,8 +11,8 @@ Portability :  Portable
 A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
 This class defines an extension of 'Data.Vector' to introduce numeric operation
-for vectors.  It begins by adding an instance for Num Vector,  allowing for 
-numeric vectors to be treated as numbers.  
+for vectors.  It begins by adding an instance for Num Vector,  allowing for
+numeric vectors to be treated as numbers.
 
 @
 example: let u = |1,2,3|
@@ -20,7 +20,7 @@ example: let u = |1,2,3|
     then u + v = |4,6,8|
 @
 
-It also implements common vector functions such as dot and (eventually) cross 
+It also implements common vector functions such as dot and (eventually) cross
 products.
 -}
 --------------------------------------------------------------------------------
@@ -69,11 +69,11 @@ module Math.Vector where
 	-- | Infix operator for 'parallel'
 	(-||) :: (Eq a, Floating a) => Vector a -> Vector a -> Bool
 	(-||) = parallel
-	
+
 	-- | Multiply a functor (Matrix or Vector) by a scalar
 	(*>) :: (Functor f, Num a) => f a -> a -> f a
 	vector *> scalar = fmap (*scalar) vector
-	
+
 	-- | Multiply a functor (Matrix or Vector) by a scalar
 	(<*) :: (Functor f, Num a) => a -> f a -> f a
 	scalar <* vector = vector *> scalar
@@ -83,14 +83,14 @@ module Math.Vector where
 	-- | Vector a relative to b
 	newVector :: (Num a) => Point a -> Point a -> Vector a
 	newVector a b = pointToVector $ b - a
-	
+
 	-- | Reads a vector from a String in the form
 	--	 <x0, x1, .. xn>
 	readVector :: Read a => String -> Vector a
 	readVector  = fmap read . f
 		where f (x:xs)
 			| x /= '<'  = error "Parse error"
-			| last xs  /= '>' = error "Parse error"  
+			| last xs  /= '>' = error "Parse error"
 			| otherwise = V.fromList . splitOn "," . init $ xs
 
 	-- * Vector Operations
@@ -134,7 +134,7 @@ module Math.Vector where
 	-- | returns the unit vector of u
 	unitVector :: (Floating a) => Vector a -> Vector a
 	unitVector u = fmap (/ magnitude u) u
-	
+
 	-- | Converts a Point to a Vector
 	pointToVector :: Point a -> Vector a
 	pointToVector x = x
