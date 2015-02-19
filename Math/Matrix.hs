@@ -63,15 +63,15 @@ instance Show a => Show (Matrix a) where
 -- * Matrix Creation
 
 {- | Creates an m x n matrix with the given generator function.
-   
+
    The generator function can be any funtion of type (Int,Int) -> a.  Where 
    (Int, Int) represents the position (x,y) in the matrix and a is the result at
    that position. 
 
    Example:
-   
+
    >\(x,y) -> x + y
-   
+
    >>> matrix 4 4 (\(x,y) -> x + y)
    | 0 1 2 3 |  which is equivalent to: | (0 + 0), (0 + 1), (0 + 2), (0 + 3) |
    | 1 2 3 4 |                          | (1 + 0), (1 + 1), (1 + 2), (1 + 3) |
@@ -129,6 +129,9 @@ enumMatrix :: (Enum a)
            -> Matrix a
 enumMatrix r c = fromList r c . enumFrom
 
+-- | Creates a Cartesian product between two vectors
+cartesianProduct :: Vector a -> Vector b -> Matrix (a,b)
+cartesianProduct u v = matrix (V.length u) (V.length v) $ \(i,j) -> (u!i, v!j)
 -- * Accessing
 
 -- ** Accessing elements
