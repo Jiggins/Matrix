@@ -8,13 +8,13 @@ Maintainer  :  jackhiggins07@gmail.com
 Stability   :  Stable
 Portability :  Portable
 
-This class defines functions to operate on pomts  
+This class defines functions to operate on pomts
 -}
 --------------------------------------------------------------------------------
 module Math.Point where
 
 import Math.Util
-import Math.Vector 
+import Math.Vector
 import qualified Data.Vector as V
 
 -- | Distance between two points

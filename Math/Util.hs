@@ -21,7 +21,7 @@ module Math.Util where
 
 	> dotProduct u v = V.sum (u * v)
 
-	-} 
+	-}
 	(.:) :: (b -> c) -> (a -> a1 -> b) -> a -> a1 -> c
 	(.:) = (.) . (.)
 

@@ -1,3 +1,4 @@
+{-# LANGUAGE BangPatterns #-}
 --------------------------------------------------------------------------------
 {- |
 Module      :  Math.Vector
@@ -12,7 +13,7 @@ A Haskell implementation of Numeric Vectors, Matrices and Lines.
 
 -}
 --------------------------------------------------------------------------------
-module Math.Matrix where 
+module Math.Matrix where
 
 import Data.List hiding (transpose)
 import Data.Ord
@@ -20,7 +21,7 @@ import Data.Vector ((!))
 import Math.Vector
 import qualified Data.Vector as V
 
-{- | Matrix implementation using the 'Data.Vector' class.  A matrix is defined 
+{- | Matrix implementation using the 'Data.Vector' class.  A matrix is defined
     as a 'Vector' of 'Vectors'.  This implementation allows for Matrices of any
     size from 1 * 1 up to intMax * intMax, (theoretically but don't try it).
 
@@ -30,9 +31,9 @@ import qualified Data.Vector as V
     | 0 0 1 0 |
     | 0 0 0 1 |
 -}
-data Matrix a = Matrix { rows    :: Int -- ^ Number of rows
-                       , columns :: Int -- ^ Number of Columns
-                       , vectors :: (Vector (Vector a))
+data Matrix a = Matrix { rows    :: !Int -- ^ Number of rows
+                       , columns :: !Int -- ^ Number of Columns
+                       , vectors :: !(Vector (Vector a))
                       } deriving (Eq)
 
 -- | Allows for Matrices to be treated as a number.
@@ -45,8 +46,8 @@ instance (Num a) => Num (Matrix a) where
     signum = undefined
     fromInteger = undefined
 
--- | Instance the Functor class to define the fmap function for matrices.  
--- mapping a function over a matrix will map the function over all of the 
+-- | Instance the Functor class to define the fmap function for matrices.
+-- mapping a function over a matrix will map the function over all of the
 -- elements in the matrix.
 instance Functor Matrix where
     fmap f (Matrix row col vec) = Matrix row col (fmap (fmap f) vec)
@@ -63,15 +64,15 @@ instance Show a => Show (Matrix a) where
 -- * Matrix Creation
 
 {- | Creates an m x n matrix with the given generator function.
-   
-   The generator function can be any funtion of type (Int,Int) -> a.  Where 
+
+   The generator function can be any funtion of type (Int,Int) -> a.  Where
    (Int, Int) represents the position (x,y) in the matrix and a is the result at
-   that position. 
+   that position.
 
    Example:
-   
+
    >\(x,y) -> x + y
-   
+
    >>> matrix 4 4 (\(x,y) -> x + y)
    | 0 1 2 3 |  which is equivalent to: | (0 + 0), (0 + 1), (0 + 2), (0 + 3) |
    | 1 2 3 4 |                          | (1 + 0), (1 + 1), (1 + 2), (1 + 3) |
@@ -113,7 +114,7 @@ zeroMatrix m n = matrix m n (\_ -> 0)
 inOrderMatrix :: Int -> Int -> Matrix Int
 inOrderMatrix n m = matrix n m $ \(i,j) -> i*m + j+1
 
-{- | Similar to 'inOrderMatrix' but is given a starting value.  The starting 
+{- | Similar to 'inOrderMatrix' but is given a starting value.  The starting
 value must be an enumeratable type; Int, Char, etc.
 
 >>> enumMatrix 3 3 'a'
@@ -122,20 +123,23 @@ value must be an enumeratable type; Int, Char, etc.
 | 'g' 'h' 'i' |
 
 -}
-enumMatrix :: (Enum a) 
+enumMatrix :: (Enum a)
            => Int -- ^ Rows
            -> Int -- ^ Columns
            -> a   -- ^ Starting value
            -> Matrix a
 enumMatrix r c = fromList r c . enumFrom
 
+-- | Creates a Cartesian product between two vectors
+cartesianProduct :: Vector a -> Vector b -> Matrix (a,b)
+cartesianProduct u v = matrix (V.length u) (V.length v) $ \(i,j) -> (u!i, v!j)
 -- * Accessing
 
 -- ** Accessing elements
 
 -- | returns the element at position (i,j)
 getElem :: (Int, Int) -> Matrix a -> a
-getElem (i, j) m 
+getElem (i, j) m
     | i >= rows m = error $ "Row Index out of bounds " ++ show (i,j)
     | j >= columns m = error $ "Column Index out of bounds " ++ show (i,j)
     | otherwise = (vectors m ! i) ! j
@@ -200,7 +204,7 @@ mZipWith f m n = matrix row col (\(i,j) -> getElem (i,j) m `f` getElem (i,j) n)
 
 -- | Maps a function onto a row
 mapRow :: (a -> a) -> Int -> Matrix a -> Matrix a
-mapRow f r m = matrix (rows m) (columns m) $ 
+mapRow f r m = matrix (rows m) (columns m) $
     \(i,j) -> if i == r then f $ getElem (i,j) m else getElem (i,j) m
 
 -- | Maps a function onto a column
@@ -210,7 +214,7 @@ mapColumn f c m = matrix (rows m) (columns m) $
 
 -- | Swap two rows
 swapRow :: Int -> Int -> Matrix a -> Matrix a
-swapRow a b m = matrix (rows m) (columns m) swap 
+swapRow a b m = matrix (rows m) (columns m) swap
     where swap (i,j) | i == a = getElem (b,j) m
                      | i == b = getElem (a,j) m
                      | otherwise = getElem (i,j) m
@@ -230,7 +234,7 @@ sortRows m = fromVectors . V.fromList . sort . V.toList . vectors $ m
 -- ** Joining Matrices
 
 {- | Joins two matrices side by side
-   
+
    >>> matrix 4 4 (\(i,j)-> 4*i + j+1) <|> identity 4
    |  1  2  3  4  1  0  0  0 |
    |  5  6  7  8  0  1  0  0 |
@@ -240,7 +244,7 @@ sortRows m = fromVectors . V.fromList . sort . V.toList . vectors $ m
 -}
 (<|>) :: Matrix a -> Matrix a -> Matrix a
 m <|> n = matrix (rows m `min` rows n) (columns m + columns n) generate
-    where generate (i,j) 
+    where generate (i,j)
             | j < columns m = getElem (i,j) m
             | otherwise     = getElem (i, j - columns m) n
 
@@ -259,7 +263,7 @@ m <|> n = matrix (rows m `min` rows n) (columns m + columns n) generate
 -}
 (<->) :: Matrix a -> Matrix a -> Matrix a
 m <-> n = matrix (rows m + rows n) (columns m `min` columns n) generate
-    where generate (i,j) 
+    where generate (i,j)
             | i < rows m = getElem (i,j) m
             | otherwise  = getElem (i - rows m, j) n
 

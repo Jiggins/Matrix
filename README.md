@@ -18,7 +18,7 @@ Installation
 - Unix:
     ```Bash
     cd path/to/Matrix
-  
+
     cabal update
     cabal build && cabal install
     ```
