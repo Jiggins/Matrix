@@ -222,6 +222,11 @@ swapColumn a b m = matrix (rows m) (columns m) swap
                      | j == b = getElem (a,j) m
                      | otherwise = getElem (i,j) m
 
+-- | Sort the rows of a matrix
+sortRows :: (Ord a) => Matrix a -> Matrix a
+sortRows m = fromVectors . V.fromList . sort . V.toList . vectors $ m
+
+
 -- ** Joining Matrices
 
 {- | Joins two matrices side by side
