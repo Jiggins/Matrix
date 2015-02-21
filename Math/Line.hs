@@ -47,19 +47,19 @@ instance Show a => Show (Line a) where
 
 -- | Creates a line from a point and a Vector
 line :: Point a -> Vector a -> Line a
-line p v = Line p v
+line = Line
 
 --Needs Testing
 -- | Gets the perpendicular distance from a point to a line.
 distPointToLine :: (Num a, Floating a) => Point a -> Line a -> a
-distPointToLine p l = abs (p0p `dot` d) / (magnitude d)
+distPointToLine p l = abs (p0p `dot` d) / magnitude d
 	where p0p = newVector p (point l)
 	      d   = vector l
 
 -- | True if two lines are parallel.
 parallelLine :: (Eq a, Floating a) => Line a -> Line a -> Bool
-parallelLine a b = (vector a) -|| (vector b)
+parallelLine a b = vector a -|| vector b
 
 -- | True if two lines are perpendicular
 perpendicularLine :: (Eq a, Num a) => Line a -> Line a -> Bool
-perpendicularLine a b = (vector a) -| (vector b)
+perpendicularLine a b = vector a -| vector b

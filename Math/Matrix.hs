@@ -1,4 +1,3 @@
-{-# LANGUAGE BangPatterns #-}
 --------------------------------------------------------------------------------
 {- |
 Module      :  Math.Vector
@@ -56,7 +55,7 @@ instance Functor Matrix where
 instance Show a => Show (Matrix a) where
     show = intercalate "\n" . pad . toLists . fmap show
       where bars = ("|"++) . (++" |")
-            pad v = map (bars . concat . map ((' ':) . padTo (maxLength v))) v
+            pad v = map (bars . concatMap ((' ':) . padTo (maxLength v))) v
               where maxLength = length . maximumBy (comparing length) . concat
                     padTo n s | length s == n = s
                               | otherwise = padTo n $ ' ' : s
@@ -85,7 +84,7 @@ matrix :: Int               -- ^ Number of rows
        -> ((Int, Int) -> a) -- ^ Generator function
        -> Matrix a
 matrix row col f = Matrix row col newMatrix
-    where newMatrix = V.generate row (\i -> V.generate col $ (curry f) i)
+    where newMatrix = V.generate row (V.generate col . curry f)
 
 {- | Creates an n x n matrix where the main diagonal = 0.
 
@@ -100,7 +99,7 @@ identity n = matrix n n (\(i,j) -> if i == j then 1 else 0)
 
 -- | Creates an m x n matrix of 0's
 zeroMatrix :: Num a => Int -> Int -> Matrix a
-zeroMatrix m n = matrix m n (\_ -> 0)
+zeroMatrix m n = matrix m n (const 0)
 
 {- | Creates an n x m matrix of Ints in ascending order.
 
@@ -160,11 +159,11 @@ column i m | i < 0         = error $ "Negative index " ++ show i
 
 -- | Returns the main diagonal
 mainDiagonal :: Matrix a -> Vector a
-mainDiagonal m = V.generate ((columns m) `min` (rows m)) (\i -> getElem (i,i) m)
+mainDiagonal m = V.generate (columns m `min` rows m) (\i -> getElem (i,i) m)
 
 otherDiagonal :: Matrix a -> Vector a
-otherDiagonal m = V.generate ((columns m) `min` (rows m))
-  (\i -> getElem (i,(columns m)-i) m)
+otherDiagonal m = V.generate (columns m `min` rows m)
+  (\i -> getElem (i, columns m - i) m)
 
 -- ** Properties
 
@@ -174,7 +173,7 @@ size m = (rows m, columns m)
 
 -- | returns True if matrix is square
 square :: Matrix a -> Bool
-square m = (rows m) == (columns m)
+square m = rows m == columns m
 
 -- *  Matrix Manipulation
 
@@ -190,9 +189,9 @@ transpose m = matrix (columns m) (rows m) (\(i,j) -> getElem (j,i) m)
 --   Creates a new matrix from the dot product of the rows of m
 --   and the columns of n
 multiplyMatrix :: Num a => Matrix a -> Matrix a -> Matrix a
-multiplyMatrix m n | (columns n) /= (rows m) = error "Invalid sizes"
+multiplyMatrix m n | columns n /= rows m = error "Invalid sizes"
                    | otherwise = matrix (rows m) (columns n)
-                        (\(i,j) -> (row i m) <.> (column j n))
+                        (\(i,j) -> row i m <.> column j n)
 
 -- | zipWith function defined for matrices
 mZipWith :: (a -> b -> c) -> Matrix a -> Matrix b -> Matrix c

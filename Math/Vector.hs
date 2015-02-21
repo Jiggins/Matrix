@@ -29,7 +29,6 @@ module Math.Vector where
 	import Data.List.Split
 	import Math.Util
 	import Data.Vector ((!))
-	import Data.Function
 	import qualified Data.Vector as V
 
 	-- | Points are expressed as 'Data.Vector's.
@@ -139,6 +138,7 @@ module Math.Vector where
 	pointToVector :: Point a -> Vector a
 	pointToVector x = x
 
+	crossProduct :: Num a => Vector a -> Vector a -> Vector a
 	crossProduct u v | V.length v /= 3 = error "Cross product is defned for 3D."
 	                 | otherwise = V.fromList [(u!1 * v!2) - (u!2 * v!1)
 	                                          ,(u!2 * v!0) - (u!0 * v!2)
