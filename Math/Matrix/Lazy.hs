@@ -8,10 +8,10 @@ data LazyMatrix a = LazyMatrix { rows     :: Int -- ^ Number of rows
                               }                              -- function
 
 instance Show a => Show (LazyMatrix a) where
-	show = show . generate
+  show = show . generate
 
 instance Functor LazyMatrix where
-	fmap f m = LazyMatrix (rows m) (columns m) (f . function m)
+  fmap f m = LazyMatrix (rows m) (columns m) (f . function m)
 
 lmatrix :: Int -> Int -> ((Int,Int) -> a) -> LazyMatrix a
 lmatrix = LazyMatrix

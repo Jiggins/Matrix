@@ -24,7 +24,6 @@ library
                      Math.Matrix.Lazy, Math.Matrix.IO, Math.Point,
                      Math.Matrix.REF
 
-  build-depends:     base == 4.*, vector >=0.10 && <0.11, split > 0.1.3,
-                     text >= 1.1
+  build-depends:     base == 4.*, vector >=0.10, split > 0.1.3, text >= 1.1
 
   default-language:  Haskell2010

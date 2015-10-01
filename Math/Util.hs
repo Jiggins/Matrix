@@ -12,25 +12,25 @@ Portability :  Portable
 --------------------------------------------------------------------------------
 module Math.Util where
 
-	{- | Function composition composition.  Composes an arity 1 function with an
-	arity 2 function.
+{- | Function composition composition.  Composes an arity 1 function with an
+arity 2 function.
 
-	> dotProduct = V.sum .: (*)
+> dotProduct = V.sum .: (*)
 
-	Is equivalent to:
+Is equivalent to:
 
-	> dotProduct u v = V.sum (u * v)
+> dotProduct u v = V.sum (u * v)
 
-	-}
-	(.:) :: (b -> c) -> (a -> a1 -> b) -> a -> a1 -> c
-	(.:) = (.) . (.)
+-}
+(.:) :: (b -> c) -> (a -> a1 -> b) -> a -> a1 -> c
+(.:) = (.) . (.)
 
-	-- * Angle conversions
+-- * Angle conversions
 
-	-- | Converts Radians to Degrees
-	toDegrees :: Floating a => a -> a
-	toDegrees rad = rad * (180 / pi)
+-- | Converts Radians to Degrees
+toDegrees :: Floating a => a -> a
+toDegrees rad = rad * (180 / pi)
 
-	-- | Converts Degrees to Radians
-	toRadians :: Floating a => a -> a
-	toRadians deg = deg * (pi / 180)
+-- | Converts Degrees to Radians
+toRadians :: Floating a => a -> a
+toRadians deg = deg * (pi / 180)
